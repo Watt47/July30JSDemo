@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <title>
+            YouTube API Demo
+        </title>
+        <script>
+          var tag = document.createElement('script');
+          tag.id = 'iframe-demo';
+          tag.src = 'https://www.youtube.com/iframe_api';
+          var firstScriptTag = document.getElementsByTagName('script')[0];
+          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+          var player;
+          function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: 'Ts8J3JpdJrc!',
+                playerVars : {
+                    controls: 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+            setTextById(1, "fired");
+          }
+          function onPlayerReady(){
+              setTextById(2, "fired");
+              setTextById(7, player.getVideoUrl());
+              setTextById(8, player.getVideoEmbedCode());
+          }
+          function onPlayerStateChange(){
+              switch(player.getPlayerState()){
+                    case -1:
+                      state = "unstarted";
+                      break;
+                    case 0:
+                      state = "ended";
+                      break;
+                    case 1:
+                      state = "playing";
+                      break;
+                     case 2:
+                      state = "paused";
+                      break;
+                    case 3:
+                      state = "buffering";
+                      break;
+                    case 5:
+                      state = "video cued";
+                      break;
+              }
+              setTextById(3, state);
+          }
+          function play(){
+              player.playVideo();
+          }
+          function pause(){
+              player.pauseVideo();
+          }
+          function updateUI(){
+              setTextById(4, player.getVideoLoadedFraction());
+              setTextById(5, player.getCurrentTime());
+              setTextById(6, player.getDuration());
+          }
+          setInterval(updateUI, 100);
+          function setTextById(id, text){
+              document.getElementById(id).innerText = text;
+          }
+        </script>
+    </head>
+    <body style="text-align: center;">
+        <h2>
+            YouTube API Demo
+        </h2>
+        <iframe id="player" type="text/html" width="640" height="360"
+   src=
+  "http://www.youtube.com/embed/Ts8J3JpdJrc?enablejsapi=1&origin=http://demo.wattsapp.su&controls=0"
+  frameborder="0"></iframe>
+  <button onclick="play();">Start</button>
+  <button onclick="pause();">Pause</button>
+  <button onclick="player.destroy();">Destroy</button>
+  <table>
+      <tr>
+          <td>onYouTubeIframeAPIReady</td><td id=1></td>
+      </tr>
+      <tr>
+          <td>onPlayerReady </td><td id=2></td>
+      </tr>
+      <tr>
+          <td>PlayerState</td><td id=3></td>
+      </tr>
+      <tr>
+          <td>VideoLoadedFraction</td><td id=4></td>
+      </tr>
+      <tr>
+          <td>CurrentTime</td><td id=5></td>
+      </tr>
+      <tr>
+          <td>Duration</td><td id=6></td>
+      </tr>
+      <tr>
+          <td>VideoUrl</td><td id=7></td>
+      </tr>
+      <tr>
+          <td>VideoEmbedCode</td><td id=8></td>
+      </tr>
+  </table>
+    </body>
+</html>

@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <title>
+            Vimeo SDK Demo
+        </title>
+    </head>
+    <body style="text-align: center;">
+        <h1>
+            Vimeo SDK Demo
+        </h1>
+        <iframe id=player src="https://player.vimeo.com/video/441766393" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+        <script src="https://player.vimeo.com/api/player.js"></script>
+  <script>
+    var player = new Vimeo.Player(document.getElementById("player"));
+    player.ready().then(function(){
+              setTextById(2, "fired");
+        player.getVideoUrl().then(function(url){
+            setTextById(7, url);
+        });
+        player.getVideoEmbedCode().then(function(code){
+              setTextById(8, code);
+        });
+    });
+          function setTextById(id, text){
+              document.getElementById(id).innerText = text;
+          }
+          player.on("progress", function(data){
+              setTextById(3, JSON.stringify(data));
+          });
+          player.on("timeupdate", function(data){
+              setTextById(4, JSON.stringify(data));
+          });
+    </script>
+      <button onclick="player.play();">Start</button>
+  <button onclick="player.pause();">Pause</button>
+  <button onclick="player.destroy();">Destroy</button>
+  <table>
+      <tr>
+          <td></td><td id=1></td>
+      </tr>
+      <tr>
+          <td>player.ready()</td><td id=2></td>
+      </tr>
+      <tr>
+          <td>progress (buffer)</td><td id=3></td>
+      </tr>
+      <tr>
+          <td>timeupdate (play)</td><td id=4></td>
+      </tr>
+      <tr>
+          <td></td><td id=5></td>
+      </tr>
+      <tr>
+          <td></td><td id=6></td>
+      </tr>
+      <tr>
+          <td>VideoUrl</td><td id=7></td>
+      </tr>
+      <tr>
+          <td>VideoEmbedCode</td><td id=8></td>
+      </tr>
+  </table>
+    </body>
+</html>
